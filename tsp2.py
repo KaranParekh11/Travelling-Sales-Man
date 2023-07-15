@@ -15,6 +15,17 @@ print(places, len(places))
 
 
 def haversine_distance(coord1, coord2):
+    """
+    Calculate the distance between two coordinates using the Haversine formula.
+
+    Args:
+        coord1 (tuple): A tuple containing the latitude and longitude of the first coordinate.
+        coord2 (tuple): A tuple containing the latitude and longitude of the second coordinate.
+
+    Returns:
+        float: The distance between the two coordinates in kilometers.
+    """
+    # Extract latitude and longitude values from the coordinate tuples
     lat1, lon1 = coord1
     lat2, lon2 = coord2
 
@@ -39,13 +50,34 @@ def haversine_distance(coord1, coord2):
     distance = R * c
     return distance
 
-
 def tsp_dp(graph, start):
+    """
+    Solve the traveling salesman problem using dynamic programming.
+
+    Args:
+        graph (List[List[int]]): The adjacency matrix representation of the graph.
+        start (int): The starting city index.
+
+    Returns:
+        Tuple[int, List[int]]: The minimum cost and the optimal tour.
+    """
+
     n = len(graph)
     all_sets = (1 << n) - 1
     memo = [[-1] * n for _ in range(all_sets)]
-    print(graph)
+
     def tsp_helper(mask, current_city):
+        """
+        Recursive helper function to find the optimal tour.
+
+        Args:
+            mask (int): The bitmask indicating the visited cities.
+            current_city (int): The index of the current city.
+
+        Returns:
+            Tuple[int, List[int]]: The minimum cost and the optimal tour.
+        """
+
         if mask == all_sets:
             return graph[current_city][start], [current_city]
 
@@ -75,8 +107,6 @@ for i in range(len(places)):
     for j in range(len(places)):
         dist[i][j] = haversine_distance(places[i], places[j])
 
-# for x in dist:
-#     print(x)
 min_cost, tour = tsp_dp(dist, 0)  # Start from index 0
 
 # Generate the final tour places using the coordinates
